@@ -29,6 +29,7 @@ namespace InterfazInteresesMensualHouston.Helpers
             }
 
         }
+       
 
         /// <summary>
         /// Obtiene fecha dependiendo el formato escogido

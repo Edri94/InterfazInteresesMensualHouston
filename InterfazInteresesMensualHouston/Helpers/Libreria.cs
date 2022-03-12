@@ -117,15 +117,40 @@ namespace InterfazInteresesMensualHouston.Helpers
 
         }
 
-        public void CrearFolder()
+        public DirectoryInfo CrearFolder(string path)
         {
-
+            try
+            {
+                return Directory.CreateDirectory(path);
+            }
+            catch (Exception ex)
+            {
+                Log.Escribe(ex);
+                return null;
+            }
         }
 
 
-        public void ValidarDirectorio()
+        public bool ValidarDirectorio(string path)
         {
+            try
+            {
+                if(Directory.Exists(path))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
 
+                
+            }
+            catch (Exception ex )
+            {
+                Log.Escribe(ex);
+                return false;
+            }
         }
 
         public void CrearArchivos(string[] arreglo)
@@ -220,6 +245,53 @@ namespace InterfazInteresesMensualHouston.Helpers
         }
 
         public void chekprocessowner()
+        {
+
+        }
+
+        public void KillProcess()
+        {
+
+        }
+
+        public void KillProcessOwner()
+        {
+
+        }
+
+        public void CreateProcess()
+        {
+
+        }
+
+        public void GetMultriString_FromArray()
+        {
+
+        }
+
+        public void EscribirRegistro()
+        {
+
+        }
+
+        public void F_LeeRegistro()
+        {
+
+        }
+
+
+        public void ReadAllFromAny()
+        {
+
+        }
+
+        public void ReadIni()
+        {
+
+        }
+
+
+        public void WriteIni()
         {
 
         }

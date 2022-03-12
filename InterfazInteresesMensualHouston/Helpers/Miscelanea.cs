@@ -22,9 +22,10 @@ namespace InterfazInteresesMensualHouston.Helpers
         public string watchApp;
         public string watchAppPath;
         public string diasDeActividad;
+        public string diasInhabiles;
         public string diasFeriados;
-        public DateTime horaDesde;
-        public DateTime horaHasta;
+        public TimeSpan horaDesde;
+        public TimeSpan horaHasta;
         public int frecuencia;
         public string reset;
         public string FechaProceso;
