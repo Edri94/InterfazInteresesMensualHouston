@@ -153,6 +153,28 @@ namespace InterfazInteresesMensualHouston.Helpers
             }
         }
 
+        public bool ValidarArchivo(string path)
+        {
+            try
+            {
+                if (File.Exists(path))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                Log.Escribe(ex);
+                return false;
+            }
+        }
+
         public void CrearArchivos(string[] arreglo)
         {
 
