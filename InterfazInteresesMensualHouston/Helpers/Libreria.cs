@@ -39,9 +39,33 @@ namespace InterfazInteresesMensualHouston.Helpers
             
         }
 
-        public void ArrayText()
+        public string[] ArrayText(string cadena, char separador)
         {
+            try
+            {
+                string[] al;
+                int z = 0;
 
+                string[] a = cadena.Split(separador);
+
+                for(int i = 0; i<= a.Length; i++)
+                {
+                    z = z + 1;
+                }
+
+                if(z !=0)
+                {
+                    z = z - 1;
+                }
+
+               
+
+            }
+            catch (Exception ex)
+            {
+                Log.Escribe(ex);
+            }
+             return null;
         }
 
         public void ValSplitText()

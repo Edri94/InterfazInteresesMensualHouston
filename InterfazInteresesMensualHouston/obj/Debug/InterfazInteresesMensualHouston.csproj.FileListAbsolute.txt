@@ -3,3 +3,4 @@ C:\Users\MI05332\source\repos\InterfazInteresesMensualHouston\InterfazInteresesM
 C:\Users\MI05332\source\repos\InterfazInteresesMensualHouston\InterfazInteresesMensualHouston\obj\Debug\InterfazInteresesMensualHouston.csproj.CoreCompileInputs.cache
 C:\Users\MI05332\source\repos\InterfazInteresesMensualHouston\InterfazInteresesMensualHouston\obj\Debug\InterfazInteresesMensualHouston.dll
 C:\Users\MI05332\source\repos\InterfazInteresesMensualHouston\InterfazInteresesMensualHouston\obj\Debug\InterfazInteresesMensualHouston.pdb
+C:\Users\MI05332\source\repos\InterfazInteresesMensualHouston\InterfazInteresesMensualHouston\obj\Debug\InterfazInteresesMensualHouston.csproj.AssemblyReference.cache

@@ -20,6 +20,7 @@ namespace Consumiento_InterfazInteresesMensualHouston
         string[] argumentos;
         string str_primerdiasemana;
         int int_primerdiasemana;
+        string[] ejecuciones;
 
         public Form1()
         {
@@ -39,7 +40,7 @@ namespace Consumiento_InterfazInteresesMensualHouston
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+            Command.Text = DateTime.Now.ToString("dd-MM-yyyy");
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -98,7 +99,7 @@ namespace Consumiento_InterfazInteresesMensualHouston
                 {
                     if (tmp.Contains("/"))
                     {
-                        miscelanea.DiaProceso = DateTime.Parse(tmp);
+                        miscelanea.DiaProceso = DateTime.Parse(tmp); //pruebas
                         miscelanea.FechaProceso = Funcion.Mid(miscelanea.DiaProceso.ToString(), 7, 4) + Funcion.Mid(miscelanea.DiaProceso.ToString(), 4, 2) + Funcion.Mid(miscelanea.DiaProceso.ToString(), 1, 2);
                     }
                     else
@@ -113,7 +114,7 @@ namespace Consumiento_InterfazInteresesMensualHouston
                 string DiaDeLaSemana = Weekday(DateTime.Now, str_primerdiasemana);
 
                 int n = miscelanea.diasInhabiles.IndexOf(diames);
-                int m = miscelanea.diasDeActividad.IndexOf(DiaDeLaSemana); 
+                int m = miscelanea.diasDeActividad.IndexOf(DiaDeLaSemana);
 
 
                 if (ValidaFecha() == false)
@@ -132,6 +133,7 @@ namespace Consumiento_InterfazInteresesMensualHouston
 
                 e = miscelanea.RutaTransfer + FechaAnterior() + " -g -p" + miscelanea.RutaTransfer2;
 
+                //buscar : -p:\Ticket Migracion\Disparador\Interfaces\Transfer\Assist\app001.ini
                 if (libreria.ValidarArchivo(miscelanea.RutaTransfer2 + "\\" + "app1.ini"))
                 {
                     e = miscelanea.RutaTransfer + FechaAnterior() + " -g -p" + miscelanea.RutaTransfer2;
@@ -146,13 +148,108 @@ namespace Consumiento_InterfazInteresesMensualHouston
 
                 Thread.Sleep(3000);
 
-                string archivo = String.Empty;
-                //ejecuciones = lib.arraytext(lib.ReadIni(INI_PATH, "ARCHIVOS", "TIPOS"), ",")
+                //ValidaCarga
+                //IniciaEnvio
+
+
+                ejecuciones = Funcion.getValueAppConfig("TIPOS", "ARCHIVOS").Split(',');
+                string[] archiv = new string[ejecuciones.Length];
+
+                archiv = ejecuciones;
+
+                for(int i = 0; i < ejecuciones.Length; i++ )
+                {
+                    ejecuciones[i] = miscelanea.RutaArch + (ejecuciones[i]).ToUpper().Replace(" ", "") + reggresafechaarch() + ".txt";
+                    archiv[i] = ejecuciones[i].ToUpper().Replace(" ", "") + reggresafechaarch() + ".txt";
+                }
+
+                int va, ae, ane;
+                va = 0;
+                ane = 0;
+
+                Message("Se procedera a copiar " + ejecuciones.Length +  " archivos");
+
+                bool ok = false;
+
+                for(int i = 0; i <= ejecuciones.Length; i++)
+                {
+                    if(libreria.ValidarArchivo(ejecuciones[i]) == false)
+                    {
+                        Message("El archivo  " + ejecuciones[i] + " no encontrado en el la ruta " + miscelanea.RutaServidor + "  , no se puede copiar.");
+                        ane = ane + 1;
+                    }
+                    else
+                    {
+                        Message("El archivo  " + ejecuciones[i].ToUpper().Replace(miscelanea.RutaArch, "") + "  encontrado, iniciando proceso de copiado al servidor " + miscelanea.RutaServidor.ToUpper().Replace("*.TXT", "") + "   .......");
+                        string qw = "xcopy " + ejecuciones[i] + " " + miscelanea.RutaServidor + " /y";
+
+                        Message("Copiando el archivo " +  qw.Replace("xcopy", "").Replace("/y", "").Replace(miscelanea.RutaArch, "") + miscelanea.RutaServidor);
+                        Shell("xcopy.exe " + ejecuciones[i] + miscelanea.RutaServidor + " /y");
+
+                        ok4 = true;
+
+                        string qa;
+
+                        qa = miscelanea.RutaServidor.ToUpper().Replace("*.TXT", "") + ejecuciones[i].ToUpper().Replace(miscelanea.RutaArch, "");
+
+                        if(libreria.ValidarArchivo(qa))
+                        {
+                            float peso;
+                            peso = libreria.GetFileSize(qa) / 1024;
+
+                            if (peso < 1)
+                            {
+                                Message("El archivo " + ejecuciones[i].ToUpper().Replace(miscelanea.RutaArch, "") +  " , copiado al servidor " + miscelanea.RutaServidor.ToUpper().Replace("*.TXT", "")+ ", el archivo esta vacio ");
+                            }
+                            else
+                            {
+                                Message("El archivo " + ejecuciones[i].Replace(miscelanea.RutaArch, "") + " , copiado al servidor " + miscelanea.RutaServidor.ToUpper().Replace("*.TXT", "") + ", el archivo pesa " + peso + " kb");
+                            }
+                        }
+
+                    }
+                }
 
             }
             catch (Exception ex)
             {
                 Log.Escribe(ex);
+            }
+        }
+
+        private string reggresafechaarch()
+        {
+            try
+            {
+                int mes;
+                int year;
+
+                string month;
+                string ano;
+
+                mes = Int32.Parse(miscelanea.DiaProceso.ToString("MM"));
+                year = Int32.Parse(miscelanea.DiaProceso.ToString("yyyy"));
+
+                if( mes == 1)
+                {
+                    ano = (year - 1).ToString();
+                    month = "12";
+                }
+                else
+                {
+                    ano = year.ToString();
+                    month = (mes - 1).ToString("00");
+                }
+
+                string fech = DateTime.Parse(ano + "/" + month + "/" + Funcion.getValueAppConfig("primerdiadelmes", "CargaEnvioA")).ToString("yyMM");
+
+                return fech;
+
+            }
+            catch (Exception ex)
+            {
+                Log.Escribe(ex);
+                return null;
             }
         }
 
